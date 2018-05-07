@@ -1,7 +1,7 @@
 {
   "name": "node-pg-module",
   "description": "A tool to use SQL files as JS modules.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/index.js",
   "repository": "https://github.com/colombbus/node-pg-module",
   "author": "Guillaume Macquat <yovar@rougain.com>",
