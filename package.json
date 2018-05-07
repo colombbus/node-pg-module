@@ -10,19 +10,24 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "prepublish": "npm run build",
-    "test": "babel-node test/index.js"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.46",
     "@babel/core": "^7.0.0-beta.46",
     "@babel/node": "^7.0.0-beta.46",
-    "@babel/preset-env": "^7.0.0-beta.46"
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^22.4.3",
+    "jest": "^22.4.3"
   },
   "dependencies": {
     "dotenv": "^5.0.1",
     "pg": "^7.4.1"
   },
   "babel": {
-    "presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   }
 }
