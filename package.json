@@ -3,12 +3,13 @@
   "description": "A tool to use SQL files as JS modules.",
   "version": "0.1.0",
   "main": "lib/index.js",
-  "repository": "https://github.com/yovar/node-pg-module",
-  "author": "Yovar <yovar@rougain.com>",
+  "repository": "https://github.com/colombbus/node-pg-module",
+  "author": "Guillaume Macquat <yovar@rougain.com>",
   "license": "GPL-3.0",
   "private": false,
   "scripts": {
     "build": "babel src --out-dir lib",
+    "prepublish": "npm run build",
     "test": "babel-node test/index.js"
   },
   "devDependencies": {
