@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import {requestDatabase} from './database'
-import {keysToCamelCase, removeDuplicates} from './objectUtils'
-import {minimizeSpaces} from './textUtils'
+import { requestDatabase } from './database'
+import { keysToCamelCase, removeDuplicates } from './objectUtils'
+import { minimizeSpaces } from './textUtils'
 
 export default function loadPgModule (dirs) {
   const filepath = path.join(...dirs)
@@ -23,7 +23,7 @@ function parseBlocks (raw) {
             name: tag.value,
             params: [],
             returns: 'void',
-            raw: ''
+            raw: '',
           })
           break
         case 'params':
@@ -36,8 +36,8 @@ function parseBlocks (raw) {
       blocks[0].raw += `${line}\n`
     }
     return blocks
-  }, []).reverse().map(({raw, ...config}) => {
-    return {...config, ...extractRefs(raw)}
+  }, []).reverse().map(({ raw, ...config }) => {
+    return { ...config, ...extractRefs(raw) }
   })
 }
 
@@ -45,7 +45,7 @@ function parseTagLine (line) {
   const terms = minimizeSpaces(line.slice(line.split('@', 1)[0].length + 1))
   const [name] = terms.split(' ', 1)
   const value = terms.slice(name.length + 1)
-  return {name, value}
+  return { name, value }
 }
 
 function extractRefs (text) {
@@ -54,7 +54,7 @@ function extractRefs (text) {
   const request = Object.entries(refs).reduce((result, [i, name]) => {
     return result.split(`$${name}`).join(`$${parseInt(i) + 1}`)
   }, text).trim()
-  return {refs, request}
+  return { refs, request }
 }
 
 function makeRequestWrapper (block) {

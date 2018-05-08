@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import {Pool} from 'pg'
+import { Pool } from 'pg'
 
 dotenv.config()
 
@@ -8,7 +8,7 @@ const database = new Pool({
   port: process.env.POSTGRESQL_PORT,
   user: process.env.POSTGRESQL_USER,
   password: process.env.POSTGRESQL_PASSWORD,
-  database: process.env.POSTGRESQL_DATABASE
+  database: process.env.POSTGRESQL_DATABASE,
 })
 
 export async function requestDatabase (query, args) {

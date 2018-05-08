@@ -1,4 +1,4 @@
-import {toCamelCase} from './textUtils'
+import { toCamelCase } from './textUtils'
 
 export function mapKeys (object, transform) {
   return Object.entries(object).reduce((result, [key, value]) => {
