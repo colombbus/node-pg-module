@@ -4,7 +4,7 @@ Use PostgreSQL files as JS modules.
 
 ## how to use
 
-- Define your model in a `.sql` file :
+- Define your model in a `.sql` file:
 
 ```sql
 -- @function insert
@@ -23,7 +23,7 @@ OFFSET $from
  LIMIT $count;
 ```
 
-- Then load and use it from JavaScript :
+- Then load and use it from JavaScript:
 
 ```javascript
 import loadPgModule from 'node-pg-module'
@@ -44,7 +44,7 @@ test().then(() => console.log('Done.'))
 
 ### environment
 
-Create a `.env` file at the root of your project containing the following configuration :
+Create a `.env` file at the root of your project containing the following configuration:
 
 ```ini
 POSTGRESQL_HOST = <host>
