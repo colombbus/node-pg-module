@@ -1,9 +1,5 @@
 // text utils
 
-export function minimizeSpaces (text) {
-  return text.replace(/\s+/g, ' ').trim()
-}
-
 export function toCamelCase (text) {
   const [head, ...tail] = text.split('_')
   return head + tail.map(capitalize)
@@ -15,15 +11,15 @@ function capitalize (text) {
 
 // object utils
 
+export function keysToCamelCase (object) {
+  return mapKeys(object, toCamelCase)
+}
+
 export function mapKeys (object, transform) {
   return Object.entries(object).reduce((result, [key, value]) => {
     result[transform(key)] = value
     return result
   }, {})
-}
-
-export function keysToCamelCase (object) {
-  return mapKeys(object, toCamelCase)
 }
 
 export function removeDuplicates (array) {

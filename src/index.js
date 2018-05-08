@@ -2,59 +2,65 @@ import fs from 'fs'
 import path from 'path'
 
 import { requestDatabase } from './database'
-import { keysToCamelCase, minimizeSpaces, removeDuplicates } from './utils'
+import { keysToCamelCase, removeDuplicates } from './utils'
 
-export default function loadPgModule (dirs) {
-  const filepath = path.join(...dirs)
-  return parseBlocks(fs.readFileSync(filepath, 'utf8'))
-    .reduce((module, block) => {
-      module[block.name] = makeRequestWrapper(block)
-      return module
-    }, {})
+export default function loadPgModule (...pathSegments) {
+  const filepath = path.join(...pathSegments)
+  const content = fs.readFileSync(filepath, 'utf8')
+  return parseModule(content)
 }
 
-function parseBlocks (raw) {
-  return raw.split('\n').reduce((blocks, line) => {
-    if (/^\s*--\s*@/.test(line)) {
-      const tag = parseTagLine(line)
-      switch (tag.name) {
-        case 'function':
-          blocks.unshift({
-            name: tag.value,
-            params: [],
-            returns: 'void',
-            raw: '',
-          })
-          break
-        case 'params':
-          blocks[0].params = tag.value.split(/, */)
-          break
-        default:
-          blocks[0][tag.name] = tag.value
-      }
+function parseModule (rawData) {
+  return parseBlocks(rawData).reduce((module, block) => {
+    module[block.name] = makeRequestWrapper(block)
+    return module
+  }, {})
+}
+
+function parseBlocks (rawData) {
+  return rawData.split('\n').reduce((blocks, rawLine) => {
+    const current = blocks[blocks.length - 1]
+    const line = parseLine(rawLine)
+    if (line.type === 'content') {
+      current.rawRequest += current.rawRequest.length > 0
+        ? `\n${line.value}`
+        : line.value
+    } else if (line.type === 'function') {
+      blocks.push(makeBlock(line.value))
     } else {
-      blocks[0].raw += `${line}\n`
+      current[line.type] = line.value
     }
     return blocks
-  }, []).reverse().map(({ raw, ...config }) => {
-    return { ...config, ...extractRefs(raw) }
-  })
+  }, []).map(extractRefs)
 }
 
-function parseTagLine (line) {
-  const terms = minimizeSpaces(line.slice(line.split('@', 1)[0].length + 1))
-  const [name] = terms.split(' ', 1)
-  const value = terms.slice(name.length + 1)
-  return { name, value }
+function parseLine (rawData) {
+  if (!/^\s*--\s*@/.test(rawData)) {
+    return { type: 'content', value: rawData }
+  }
+  const tagContent = rawData.substr(rawData.indexOf('@') + 1).trim()
+  const [ type, value ] = tagContent.split(/\s+(.*)/)
+  return type === 'params'
+    ? { type, value: value.split(/\s*,\s*/g) }
+    : { type, value }
 }
 
-function extractRefs (text) {
-  const refExprs = text.match(/\$[a-z]+(\.[a-z]+)*/gi) || []
+function makeBlock (name) {
+  return {
+    name,
+    params: [],
+    returns: 'void',
+    rawRequest: '',
+  }
+}
+
+function extractRefs (block) {
+  const refExprs = block.rawRequest.match(/\$[a-z]+(\.[a-z]+)*/gi) || []
   const refs = removeDuplicates(refExprs.map(expr => expr.slice(1)))
   const request = Object.entries(refs).reduce((result, [i, name]) => {
     return result.split(`$${name}`).join(`$${parseInt(i) + 1}`)
-  }, text).trim()
-  return { refs, request }
+  }, block.rawRequest)
+  return { ...block, request, refs }
 }
 
 function makeRequestWrapper (block) {

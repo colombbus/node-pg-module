@@ -1,7 +1,13 @@
-import PgModule from '../src'
+import loadPgModule from '../src'
+
+describe('node-pg-module', () => {
+  test('has a default export', () => {
+    expect(loadPgModule).not.toBeNull()
+  })
+})
 
 describe('PgModule', () => {
-  test('has a default export', () => {
-    expect(PgModule).not.toBeNull()
+  test('is a function', () => {
+    expect(loadPgModule).toBeInstanceOf(Function)
   })
 })
