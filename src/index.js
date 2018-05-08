@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+
 import { requestDatabase } from './database'
-import { keysToCamelCase, removeDuplicates } from './objectUtils'
-import { minimizeSpaces } from './textUtils'
+import { keysToCamelCase, minimizeSpaces, removeDuplicates } from './utils'
 
 export default function loadPgModule (dirs) {
   const filepath = path.join(...dirs)
