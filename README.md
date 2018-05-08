@@ -1,8 +1,8 @@
 # node-pg-module
 
-A tool to use PostgreSQL files as JS modules.
+Use PostgreSQL files as JS modules.
 
-## How to use
+## how to use
 
 - Define your model in a `.sql` file :
 
@@ -11,7 +11,7 @@ A tool to use PostgreSQL files as JS modules.
 -- @params data
 -- @returns row
 INSERT INTO a_table (a_column, another_column)
-VALUES ($data.aColumn, $data.anotherColumn)
+VALUES ($data.aProp, $data.anotherProp)
 RETURNING *;
 
 -- @function getRange
@@ -26,12 +26,12 @@ OFFSET $from
 - Then load and use it from JavaScript :
 
 ```javascript
-import pgload from 'node-pg-module'
+import loadPgModule from 'node-pg-module'
 
-const Model = pgload(['path', 'to', 'Model.sql'])
+const Model = loadPgModule(['path', 'to', 'Model.sql'])
 
 async function test () {
-    await Model.insert({aColumn: "aValue", anotherColumn: "anotherValue"})
+    await Model.insert({ aProp: "aValue", anotherProp: "anotherValue" })
     const rows = await Model.getRange(0, 10)
     console.log('Rows retrieved:')
     rows.forEach(row => console.log(row))
@@ -64,6 +64,6 @@ Specifies the name under which the procedure will be exported.
 
 Specifies the generated function arguments.
 
-- optional `@returns multiple | row | field | void`
+- _optional_ `@returns multiple | row | field | void`
 
 `multiple` returns all the rows from the query result, `row` only returns the first one, `field` only returns the value of the first property of the first row and `void` explicitly returns nothing.
