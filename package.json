@@ -32,10 +32,5 @@
   "dependencies": {
     "dotenv": "^5.0.1",
     "pg": "^7.4.1"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
   }
 }
