@@ -1,6 +1,12 @@
 {
   "name": "node-pg-module",
   "description": "Use PostgreSQL files as JS modules.",
+  "keywords": [
+    "import",
+    "postgres",
+    "PostgreSQL",
+    "SQL"
+  ],
   "version": "0.1.2",
   "main": "lib/index.js",
   "repository": "https://github.com/colombbus/node-pg-module",
