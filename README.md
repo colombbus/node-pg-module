@@ -31,7 +31,7 @@ import loadPgModule from 'node-pg-module'
 const Model = loadPgModule(['path', 'to', 'Model.sql'])
 
 async function test () {
-    await Model.insert({ aProp: "aValue", anotherProp: "anotherValue" })
+    await Model.insert({ aProp: 'aValue', anotherProp: 'anotherValue' })
     const rows = await Model.getRange(0, 10)
     console.log('Rows retrieved:')
     rows.forEach(row => console.log(row))
