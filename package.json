@@ -11,7 +11,7 @@
   "main": "lib/index.js",
   "repository": "https://github.com/colombbus/node-pg-module",
   "author": "Guillaume Macquat <yovar@rougain.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "private": false,
   "scripts": {
     "build": "babel src --out-dir lib",
