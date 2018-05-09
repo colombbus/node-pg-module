@@ -85,7 +85,7 @@ VALUES (
 RETURNING *;
 ```
 
-- Updating a row with optionnal values:
+- Updating a row with optional values:
 
 ```sql
 -- @function updateById
