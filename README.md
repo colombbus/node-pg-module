@@ -68,6 +68,36 @@ Specifies the generated function arguments.
 
 `multiple` returns all the rows from the query result, `row` only returns the first one, `field` only returns the value of the first property of the first row and `void` explicitly returns nothing.
 
+## tricky cases
+
+- Inserting a row with default values:
+
+```sql
+-- @function create
+-- @params data
+-- @returns row
+INSERT INTO users (nickname, gender, permission)
+VALUES (
+  $data.nickname,
+  COALESCE($data.gender, 'robot'),  -- 'robot' will be used if $data.gender evaluates to NULL.
+  COALESCE($data.permission, 'minimal')
+)
+RETURNING *;
+```
+
+- Updating a row with optionnal values:
+
+```sql
+-- @function updateById
+-- @params id, data
+-- @returns row
+UPDATE users
+   SET nickname = COALESCE($data.nickname, nickname), -- The previous value of nickname will be used if $data.nickname evaluates to NULL.
+       gender = COALESCE($data.gender, gender)
+ WHERE id = $id
+RETURNING *;
+```
+
 ## current limitations
 
 - The dollar sign `$` is not supported outside of its use as variable prefix, even if within a SQL string literal.
