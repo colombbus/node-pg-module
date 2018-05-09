@@ -67,3 +67,8 @@ Specifies the generated function arguments.
 - _optional_ `@returns multiple | row | field | void`
 
 `multiple` returns all the rows from the query result, `row` only returns the first one, `field` only returns the value of the first property of the first row and `void` explicitly returns nothing.
+
+## current limitations
+
+- The dollar sign `$` is not supported outside of its use as variable prefix, even if within a SQL string literal.
+- Deep property access is supported but only via the dot notation. Bracket notation like `$data[0].value` will fail.
